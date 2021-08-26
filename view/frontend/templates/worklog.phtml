@@ -1,0 +1,182 @@
+<?php
+use Atwix\Tempo\Service\ConfigService;
+
+// \Magento\Framework\View\Element\Template $block
+/** @var \Atwix\Tempo\ViewModel\WorklogViewModel $viewModel */
+$viewModel = $block->getViewModel();
+?>
+
+<form name="worklog" action="<?php echo $block->getUrl('*/*/preview') ?>"
+      method="post" id="attributes-edit-form"
+      class="attributes-edit-form form" enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        <legend class="legend"><span>Worklog data</span></legend>
+        <div class="field">
+            <label class="label" for="<?php echo ConfigService::WORKLOG_DATA_KEY ?>">Tab separated data:</label>
+            <div class="control">
+                <textarea id="<?php echo ConfigService::WORKLOG_DATA_KEY ?>" name="<?php echo ConfigService::WORKLOG_DATA_KEY ?>"></textarea>
+            </div>
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action submit secondary" name="preview">
+                    <span>Preview</span>
+                </button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<?php $worklogTable = $viewModel->getWorklogTable() ?>
+<table class="gridtable">
+    <tbody>
+    <?php foreach ($worklogTable as $tr => $tds): ?>
+        <tr>
+            <?php foreach ($tds as $td): ?>
+                <td><?php echo $td ?></td>
+            <?php endforeach; ?>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+
+
+<form action="<?php echo $block->getUrl('*/*/log') ?>"
+      method="get" id="attributes-edit-form"
+      class="attributes-edit-form" enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action submit primary" name="log">
+                    <span>Log</span>
+                </button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<form action="<?php echo $block->getUrl('*/*/setAccountData') ?>"
+      method="post" id="attributes-edit-form"
+      class="form attributes-edit-form" enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        <legend class="legend"><span>Personal Information</span></legend>
+        <div class="field">
+            <label class="label" for="<?php echo ConfigService::AUTHOR_ACCOUNT_ID_KEY ?>">
+                Your
+                authorAccountId: <i><?php echo (($viewModel->getAuthorAccountId())) ?? '<b style="color:red;">No set</b>' ?></i>
+            </label>
+            <div class="control">
+                <input type="text" class="input-text" name="<?php echo ConfigService::AUTHOR_ACCOUNT_ID_KEY ?>" id="<?php echo ConfigService::AUTHOR_ACCOUNT_ID_KEY ?>"/>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="<?php echo ConfigService::ACCESS_TOKEN_KEY ?>">
+                Your
+                accessToken: <i><?php echo (($viewModel->getAccessToken())) ?? '<b style="color:red;">No set</b>' ?></i>
+            </label>
+            <div class="control">
+                <input type="text" name="<?php echo ConfigService::ACCESS_TOKEN_KEY ?>" id="<?php echo ConfigService::ACCESS_TOKEN_KEY ?>" class="input-text"/>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="<?php echo ConfigService::MULTIPLIER_KEY ?>">
+                Your
+                multiplier: <i><?php echo (($viewModel->getMultiplier())) ?? '<b style="color:red;">No set</b>' ?></i>
+            </label>
+            <div class="control">
+                <input type="text" name="<?php echo ConfigService::MULTIPLIER_KEY ?>" id="<?php echo ConfigService::MULTIPLIER_KEY ?>" class="input-text"/>
+            </div>
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action submit primary" name="date-submit">
+                    <span>Update</span>
+                </button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<form action="<?php echo $block->getUrl('*/*/setDate') ?>"
+      method="post" id="attributes-edit-form"
+      class="attributes-edit-form" enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        <legend class="legend"><span>Other settings</span></legend>
+        <div class="field">
+            <label class="label" for="<?php echo ConfigService::DATE ?>">
+                Set different date:
+            </label>
+            <div class="control">
+                <input id="<?php echo ConfigService::DATE ?>" type="text" class="input-text" name="<?php echo ConfigService::DATE ?>" is="<?php echo ConfigService::DATE ?>"/>
+            </div>
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action submit secondary" name="date-submit">
+                    <span>Set Date</span>
+                </button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<div class="message info">
+    <p>
+        <a href="https://docs.google.com/spreadsheets/d/1iNhcmDouFZ4cA6VPgEM-qaLf9rKXIP5ryRsK_OOsfSU/edit?usp=sharing" target="_blank">Sample worklog Spreadsheet</a>
+    </p>
+    <p>
+        <a href="https://tempo-io.atlassian.net/wiki/spaces/THC/pages/840531971/Using+REST+API+Integrations+-+Tempo+Cloud" target="_blank">How to create Access token</a>
+    </p>
+    <p>
+        You can use this URL to get AuthorAccoutID (use your own email as parameter):
+        <a href="https://atwix.atlassian.net/rest/api/3/groupuserpicker?query=youremail@atwix.com" target="_blank">https://atwix.atlassian.net/rest/api/3/groupuserpicker?query=youremail@atwix.com</a>
+    </p>
+    <p>
+        <i>It is recommended to increase Cookie lifetime at Admin->Configuration->General->Web->Default Cookie Settings</i>
+    </p>
+</div>
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana, arial, sans-serif;
+        font-size: 12px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    table.gridtable tr:first-child {
+        font-style: italic;
+    }
+    table.gridtable tr:last-child {
+        font-style: italic;
+    }
+
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+        min-width: 65px;
+    }
+
+    table.gridtable td:first-child, table.gridtable td:nth-child(2) {
+        white-space: nowrap;
+    }
+</style>
+<!--[if lt IE 9]>
+<style type="text/css">
+    table.gradienttable th {
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d5e3e4', endColorstr='#b3c8cc', GradientType=0);
+        position: relative;
+        z-index: -1;
+    }
+
+    table.gradienttable td {
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebecda', endColorstr='#ceceb7', GradientType=0);
+        position: relative;
+        z-index: -1;
+    }
+</style>
+<![endif]-->
