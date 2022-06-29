@@ -40,10 +40,13 @@ class LogToTempoService
         if (!$authorAccountId) {
             throw new LocalizedException(__('Author Account ID is not set'));
         }
-
-        foreach ($worklog->getItems() ?? [] as $item) {
-            $payload = $this->getWorklogItemPayload($item, $authorAccountId);
-            $this->guzzleHttpclient->post(self::TEMPO_API_URL, ['body' => $payload, 'headers' => $this->getHeaders($accessToken)]);
+        try {
+            foreach ($worklog->getItems() ?? [] as $item) {
+                $payload = $this->getWorklogItemPayload($item, $authorAccountId);
+                $this->guzzleHttpclient->post(self::TEMPO_API_URL, ['body' => $payload, 'headers' => $this->getHeaders($accessToken)]);
+            }
+        } catch (\Exception $exception) {
+            throw new LocalizedException(__($exception->getMessage() . 'psyload: ' . $payload));
         }
     }
 
