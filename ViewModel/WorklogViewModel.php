@@ -42,7 +42,7 @@ class WorklogViewModel implements ArgumentInterface
                 gmdate("H:i", $item->getTimeSpentSeconds() * $multiplier),
                 gmdate("H:i", $item->getTimeSpentSeconds()),
                 str_replace("\n", " | ", $item->getComment()),
-                gmdate("H:i", $item->getTimeSpentSeconds() / 0.875),//unic time with coef
+                gmdate("H:i", (int)($item->getTimeSpentSeconds() / 0.875)),//unic time with coef
                 $item->getWorklogType()
             ];
         }
